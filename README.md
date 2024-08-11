@@ -1,6 +1,6 @@
 # FastCDC-C
 
-Haskell bindings for FastCDC algorithm.
+Haskell bindings for sleepybishop's FastCDC implementation in C.
 
 # Usage
 
