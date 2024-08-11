@@ -18,7 +18,7 @@ chunkGenerator
 
 ```
 
-If you fancy parallel programming, you might consider putting tuples `(start, size)` in 
+If you fancy parallel programming, there is also `chunkGeneratorAsync` which returns a `Chan`.
 
 # References
 
