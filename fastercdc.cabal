@@ -1,0 +1,60 @@
+cabal-version: 1.12
+name:           fastercdc
+version:        0.1.0.0
+synopsis:       Bindings for C-implementation of FastCDC algorithm
+description:    Please see the README on GitHub at <https://github.com/githubuser/fastercdc#readme>
+category:       Algorithm
+homepage:       https://github.com/maciejwas/fastercdc#readme
+bug-reports:    https://github.com/maciejwas/fastercdc/issues
+author:         Maciej Wasilewski
+maintainer:     wasilewski.maciej20@gmail.com
+copyright:      2024 Maciej Wasilewski
+license:        MIT
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/maciejwas/fastercdc
+
+library
+  exposed-modules:
+      FastCDC
+  other-modules:
+      Paths_fastercdc
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  cc-options: -O3
+  c-sources:
+      ./c-bits/fastcdc.c
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable fastercdc-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_fastercdc
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , fastercdc
+  default-language: Haskell2010
+
+test-suite fastercdc-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_fastercdc
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , fastercdc
+  default-language: Haskell2010

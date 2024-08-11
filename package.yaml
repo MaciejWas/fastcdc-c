@@ -1,0 +1,59 @@
+name:                fastercdc
+version:             0.1.0.0
+github:              "maciejwas/fastercdc"
+license:             MIT
+author:              "Maciej Wasilewski"
+maintainer:          "wasilewski.maciej20@gmail.com"
+copyright:           "2024 Maciej Wasilewski"
+
+extra-source-files:
+- README.md
+
+# Metadata used when publishing your package
+synopsis:            Bindings for C-implementation of FastCDC algorithm
+category:            Algorithm
+
+description: Please see the README on GitHub at <https://github.com/githubuser/fastercdc#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+
+ghc-options:
+- -Wall
+- -Wcompat
+- -Widentities
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wmissing-export-lists
+- -Wmissing-home-modules
+- -Wpartial-fields
+- -Wredundant-constraints
+
+library:
+  source-dirs: src
+  c-sources:
+  - ./c-bits/*.c
+  cc-options:
+  - -O3
+
+executables:
+  fastercdc-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - fastercdc
+
+tests:
+  fastercdc-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - fastercdc
