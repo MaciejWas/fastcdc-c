@@ -9,7 +9,7 @@
 
 {-# HLINT ignore "Use lambda-case" #-}
 
-module FastCDC (chunkGenerator, chunkGeneratorAsync, ChunkSizeParams (..)) where
+module FastCDC (chunkGenerator, chunkGeneratorAsync, chunkGeneratorSync, ChunkSizeParams (..)) where
 
 import Control.Concurrent (forkIO)
 import Control.Concurrent.Chan (Chan, newChan, writeChan)
@@ -23,11 +23,6 @@ foreign import ccall "wrapper"
   wrapReporter ::
     ReportChunk ->
     IO (FunPtr ReportChunk)
-
-foreign import ccall "wrapper"
-  wrapComputer ::
-    ComputeChunk ->
-    IO (FunPtr ComputeChunk)
 
 foreign import ccall "fastcdc_stream"
   chunkGeneratorC ::
@@ -46,8 +41,6 @@ data ChunkSizeParams = ChunkSizeParams
   }
 
 type ReportChunk = Ptr () -> CSize -> CSize -> IO ()
-
-type ComputeChunk = Ptr Char -> CSize -> IO ()
 
 chunkGenerator ::
   (Integral i) =>
@@ -91,27 +84,6 @@ chunkGeneratorAsync ::
   FilePath ->
   IO (Chan (Maybe (Int, Int)))
 chunkGeneratorAsync
-  params
-  filepath = do
-    channel <- newChan
-    let report start size =
-          writeChan
-            channel
-            (Just (fromIntegral start, fromIntegral size))
-    (void . forkIO)
-      ( chunkGenerator
-          params
-          filepath
-          report
-          >> writeChan channel Nothing
-      )
-    return channel
-
-chunkComputerAsync ::
-  ChunkSizeParams ->
-  FilePath ->
-  IO (Chan (Maybe (Int, Int)))
-chunkComputerAsync
   params
   filepath = do
     channel <- newChan
